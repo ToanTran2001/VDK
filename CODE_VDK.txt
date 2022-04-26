@@ -1,0 +1,80 @@
+#include <IRremote.hpp>
+#define DECODE_NEC
+#define IR_RECEIVE_PIN 11
+#include <Arduino.h>
+#define key1 4077715200
+#define key2 3877175040
+#define key3 2707357440
+#define key4 4144561920
+
+int led_pin1 = 2;
+int led_pin2 = 3;
+int led_pin3 = 4;
+int led_pin4 = 5;
+int led[] = {0,0,0,0};
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
+  Serial.print(F("Ready to receive IR: "));
+  printActiveIRProtocols(&Serial);
+  Serial.print(F("at pin "));
+  Serial.print(IR_RECEIVE_PIN);
+  Serial.println();
+  pinMode(led_pin1, OUTPUT);
+  pinMode(led_pin2, OUTPUT);
+  pinMode(led_pin3, OUTPUT);
+  pinMode(led_pin4, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if (IrReceiver.decode()) {
+    Serial.println(IrReceiver.decodedIRData.decodedRawData);
+
+    switch (IrReceiver.decodedIRData.decodedRawData) 
+    {
+      case key1:
+       if(led[1] == 1) {
+          digitalWrite(led_pin1, LOW);
+          led[1] = 0;
+        } else {
+          digitalWrite(led_pin1, HIGH);
+          led[1] = 1;
+        }
+        break; 
+      case key2:
+        if(led[2] == 1) {
+          digitalWrite(led_pin2, LOW);
+          led[2] = 0;
+        } else {
+          digitalWrite(led_pin2, HIGH);
+            led[2] = 1;
+        }
+        break;
+        
+      case key3:
+        if(led[3] == 1) {
+          digitalWrite(led_pin3, LOW);
+          led[3] = 0;
+        } else {
+          digitalWrite(led_pin3, HIGH);
+          led[3] = 1;
+        }
+        break;
+
+        case key4:
+        if(led[4] == 1) {
+          digitalWrite(led_pin4, LOW);
+          led[4] = 0;
+        } else {
+          digitalWrite(led_pin4, HIGH);
+          led[4] = 1;
+        }
+        break;
+      default   :     break;
+    }  
+    IrReceiver.resume();
+  }
+}
