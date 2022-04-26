@@ -1,7 +1,5 @@
 #include <IRremote.hpp>
-#define DECODE_NEC
 #define IR_RECEIVE_PIN 11
-#include <Arduino.h>
 #define key1 4077715200
 #define key2 3877175040
 #define key3 2707357440
